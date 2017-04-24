@@ -1,9 +1,13 @@
 from lxml import html
 import requests
 
-page = requests.get('http://www.boerse-frankfurt.de/aktie/Oracle-Aktie')
-tree = html.fromstring(page.content)
+oracle = requests.get('http://www.boerse-frankfurt.de/aktie/Oracle-Aktie')
+uniglobal = requests.get('http://www.boerse-frankfurt.de/fonds/UniGlobal--net-')
 
-kurs = tree.xpath('//div[@field="last"]/text()')
+tree = html.fromstring(uniglobal.content)
 
+wp = tree.xpath('/html/head/title/text()')
+kurs = tree.xpath('//div[@item="X00000A0200DE0009750273"]/text()')
+
+print wp
 print kurs
