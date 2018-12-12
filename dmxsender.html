@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta >
+        <title>
+            Nebelsteuerung Feuerwehr Siegertsbrunn
+        </title>
+    </head>
+    <body>
+        <h1>Feuerwehr Siegetsbrunn</h1>
+        <h3>Nebelmaschinensteuerung</h3>
+        <div class="nebelcontainer">
+            <form action="/post" method="post">
+                <h4>Nebel St&auml;rke (mindestens 5%)</h4>
+                <input type="range" min="5" max="100" value="5" id="nebelstaerkeregler">
+                <input type="text" id="nebelstaerkenanzeige" value="0">
+                <input type="range" min="1" max="10" value="0" id="nebelzeitregler">
+                <input type="text" id="nebelzeitanzeige" value="0">Minuten
+                <input type="submit" value="START">
+            </form>
+        </div>
+        <div>
+
+        </div>
+        <script>
+            var nebelstaerke =document.getElementById("nebelstaerkeregler");
+            var nebelanzeige=document.getElementById("nebelstaerkenanzeige");
+            nebelanzeige.value=nebelstaerke.value;
+            nebelstaerke.oninput=function(){
+                nebelanzeige.value=this.value;
+            }
+
+            var nebelzeit=document.getElementById("nebelzeitregler");
+            var zeitanzeige=document.getElementById("nebelzeitanzeige");
+            zeitanzeige.value=nebelzeitregler.value/2;
+            nebelzeit.oninput=function(){
+                zeit=nebelzeit.value/2;
+                zeitanzeige.value=zeit;
+            }
+        </script>
+
+<!--
+string for client.println
+client.print("<!DOCTYPE html><html> <head> <meta > <title>Nebelsteuerung Feuerwehr Siegertsbrunn </title> </head> <body> <h1>Feuerwehr Siegetsbrunn</h1> <h3>Nebelmaschinensteuerung</h3> <div class=\"nebelcontainer\"> <form action=\"/post\" method=\"post\"> <h4>Nebel St&auml;rke (mindestens 5%)</h4> <input type=\"range\" min=\"5\" max=\"100\" value=\"5\" id=\"nebelstaerkeregler\"> <input type=\"text\" id=\"nebelstaerkenanzeige\" value=\"0\"> <input type=\"range\" min=\"1\" max=\"10\" value=\"0\" id=\"nebelzeitregler\"> <input type=\"text\" id=\"nebelzeitanzeige\" value=\"0\">Minuten <input type=\"submit\" value=\"START\"> </form> </div><div> </div><script>var nebelstaerke=document.getElementById(\"nebelstaerkeregler\"); var nebelanzeige=document.getElementById(\"nebelstaerkenanzeige\"); nebelanzeige.value=nebelstaerke.value; nebelstaerke.oninput=function(){nebelanzeige.value=this.value;}var nebelzeit=document.getElementById(\"nebelzeitregler\"); var zeitanzeige=document.getElementById(\"nebelzeitanzeige\"); zeitanzeige.value=nebelzeitregler.value/2; nebelzeit.oninput=function(){zeit=nebelzeit.value/2; zeitanzeige.value=zeit;}</script> </body></html>");
+-->
+    </body>
+</html>
