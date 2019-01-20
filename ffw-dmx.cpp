@@ -5,7 +5,8 @@
 
 //Definitions
 void ClientResponseCheck();
-
+//Main Loop Timer for DMX.Update .. dmx update can only be called in the main loop
+long delaytime =0;
 
 /*
 * Area with DMX Functions
@@ -13,6 +14,7 @@ void ClientResponseCheck();
 
 //DMX definition
 DMXESPSerial dmx;
+int dmxchannel = 1;
 
 void DMXControl(int fogtime, int fogstrenght)
 {
@@ -21,6 +23,11 @@ void DMXControl(int fogtime, int fogstrenght)
   Serial.println(fogstrenght);
   Serial.print("Zeit: ");
   Serial.println(fogtime);
+  int dmxsignal = int(fogstrenght * 2.55);
+  Serial.println(dmxsignal);
+  dmx.write(dmxchannel,dmxsignal);
+  delaytime=10000*fogtime;
+  Serial.println("DMX ENDE");
 }
 //----------------------------------------------------------------
 
@@ -97,23 +104,19 @@ void ClientResponseCheck(){
   int zeit = 0;
   int staerke = 0;
   if (server.method() == HTTP_GET){
-    Serial.println("ResponseCheck IF = OK");
     for (uint8_t i = 0; i< server.args(); i++){
       if(server.argName( i ) =="staerke"){
         String text = server.arg( i );
         staerke = text.toInt();
-        Serial.print("Staerke:____");
-        Serial.println(staerke);
       }
       if (server.argName( i ) =="zeit"){
         String text =server.arg( i );
         zeit = text.toInt();
-        Serial.print("Zeit:___");
-        Serial.println(zeit);
       }
     } 
     DMXControl(zeit,staerke);
     server.send(200,"text(html",startHTML());
+    Serial.println("HTML erneut gesendet");
   }
   else{
     server.send(404, "text/plain", "Somthing went wrong!!!");
@@ -132,11 +135,18 @@ void setup() {
   SetUpAccessPoint(APName, APPwd);
 
   //HTML Server
-htmlserver();
+  htmlserver();
 }
 
 void loop(){
   server.handleClient();
+  if (delaytime>1){
+    dmx.update();
+    Serial.println("DMX UPDATE");
+    delay(delaytime);
+    delaytime=1;
+  }
+
 }
 
 String startHTML(){
